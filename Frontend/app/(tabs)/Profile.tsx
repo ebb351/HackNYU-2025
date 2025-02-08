@@ -1,9 +1,10 @@
-import { StyleSheet, ScrollView, Switch, TouchableOpacity } from "react-native"
+import { StyleSheet, ScrollView, Switch, TouchableOpacity, useColorScheme } from "react-native"
 import React from "react"
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import { useAuth } from "@/utils/authenticationManager";
 import { Ionicons } from "@expo/vector-icons"
+import Colors from '@/constants/Colors';
 
 const Profile = () => {
   const { isAuthenticated, user, logout } = useAuth()
@@ -63,10 +64,10 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F1F8E9",
+    backgroundColor: Colors[useColorScheme() ?? 'light'].profileBackground,
   },
   hero: {
-    backgroundColor: "#2E7D32",
+    backgroundColor: Colors[useColorScheme() ?? 'light'].profileHeroBg,
     padding: 20,
     alignItems: "center",
     borderBottomLeftRadius: 20,
@@ -75,12 +76,12 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: Colors[useColorScheme() ?? 'light'].profileHeroText,
     marginBottom: 10,
   },
   impactText: {
     fontSize: 16,
-    color: "#FFFFFF",
+    color: Colors[useColorScheme()?? 'light'].profileHeroText,
   },
   settingsContainer: {
     padding: 20,
@@ -90,12 +91,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#C8E6C9",
+    borderBottomColor: Colors[useColorScheme() ?? 'light'].profileBorder,
   },
   settingText: {
     marginLeft: 15,
     fontSize: 16,
-    color: "#1B5E20",
+    color: Colors[useColorScheme() ?? 'light'].profileText,
     flex: 1,
   },
 })
