@@ -11,6 +11,7 @@ export default function AuthLayout() {
 
   // Redirect to the main app if authenticated
   if (isAuthenticated) {
+    console.log("redirecting to main file")
     return <Redirect href="/(tabs)/Dashboard" />;
   }
 

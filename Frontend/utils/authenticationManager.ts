@@ -1,7 +1,7 @@
 // Frontend/utils/authenticationManager.ts
 import { useState, useEffect } from 'react';
 import { supabase } from './supabase'; // Adjust the path if needed
-import type { Session } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 
 type AuthState = {
   isAuthenticated: boolean | null;
@@ -13,6 +13,7 @@ let authInstance: AuthState | null = null;
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticatedState] = useState<boolean | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -27,8 +28,10 @@ export const useAuth = () => {
           return;
         }
         const authenticated = !!session;
-        if (isMounted) setIsAuthenticatedState(authenticated);
-
+        if (isMounted){
+          setIsAuthenticatedState(authenticated);
+          setUser(session?.user?? null);
+        }
         if (!authInstance) {
           authInstance = {
             isAuthenticated: authenticated,
@@ -50,7 +53,11 @@ export const useAuth = () => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session: Session | null) => {
         const authenticated = !!session;
-        if (isMounted) setIsAuthenticatedState(authenticated);
+        if (isMounted){
+          setIsAuthenticatedState(authenticated);
+          //kinda scary dis
+          setUser(session?.user?? null);
+        }
         if (authInstance) {
           authInstance.isAuthenticated = authenticated;
         }
@@ -63,8 +70,14 @@ export const useAuth = () => {
     };
   }, []);
 
+  const logout = async () => {
+    await supabase.auth.signOut()
+  }
+
   return {
     isAuthenticated,
+    user,
+    logout,
     // This setter is now rarely needed since state is updated via Supabase;
     // your UI should call supabase.auth.signIn or signUp.
     setIsAuthenticated: authInstance?.setIsAuthenticated ?? setIsAuthenticatedState,

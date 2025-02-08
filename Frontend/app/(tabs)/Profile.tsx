@@ -1,30 +1,104 @@
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, ScrollView, Switch, TouchableOpacity } from "react-native"
+import React from "react"
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useAuth } from "@/utils/authenticationManager";
+import { Ionicons } from "@expo/vector-icons"
 
-export default function Profile() {
+const Profile = () => {
+  const { isAuthenticated, user, logout } = useAuth()
+  const [isDynamicRoundingEnabled, setIsDynamicRoundingEnabled] = React.useState(false)
+
+  if (!isAuthenticated || !user) {
+    return (
+      <View style={styles.container}>
+        <Text>Please log in to view your profile.</Text>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
-  );
+    <ScrollView style={styles.container}>
+      <View style={styles.hero}>
+        <Text style={styles.greeting}>Hello, {}!</Text>
+        <Text style={styles.impactText}>You've planted {} trees so far!</Text>
+      </View>
+
+      <View style={styles.settingsContainer}>
+        <TouchableOpacity style={styles.settingItem}>
+          <Ionicons name="settings-outline" size={24} color="#2E7D32" />
+          <Text style={styles.settingText}>Settings</Text>
+        </TouchableOpacity>
+
+        <View style={styles.settingItem}>
+          <Ionicons name="leaf-outline" size={24} color="#2E7D32" />
+          <Text style={styles.settingText}>Dynamic Rounding</Text>
+          <Switch
+            value={isDynamicRoundingEnabled}
+            onValueChange={setIsDynamicRoundingEnabled}
+            trackColor={{ false: "#767577", true: "#81c784" }}
+            thumbColor={isDynamicRoundingEnabled ? "#2E7D32" : "#f4f3f4"}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.settingItem}>
+          <Ionicons name="document-text-outline" size={24} color="#2E7D32" />
+          <Text style={styles.settingText}>Privacy Policy</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.settingItem}>
+          <Ionicons name="document-text-outline" size={24} color="#2E7D32" />
+          <Text style={styles.settingText}>Terms of Service</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.settingItem} onPress={logout}>
+          <Ionicons name="log-out-outline" size={24} color="#2E7D32" />
+          <Text style={styles.settingText}>Log Out</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#F1F8E9",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  hero: {
+    backgroundColor: "#2E7D32",
+    padding: 20,
+    alignItems: "center",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  greeting: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    marginBottom: 10,
   },
-});
+  impactText: {
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  settingsContainer: {
+    padding: 20,
+  },
+  settingItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#C8E6C9",
+  },
+  settingText: {
+    marginLeft: 15,
+    fontSize: 16,
+    color: "#1B5E20",
+    flex: 1,
+  },
+})
+
+export default Profile
+
