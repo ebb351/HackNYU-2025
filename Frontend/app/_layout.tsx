@@ -1,5 +1,5 @@
 import { Slot, useRouter, useSegments } from 'expo-router';
-import { useAuth } from './utils/authenticationManager';
+import { useAuth } from '../utils/authenticationManager';
 import { useEffect } from 'react';
 
 export default function RootLayout() {
