@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { StyleSheet, TextInput, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, TextInput, Pressable } from 'react-native';
+import { supabase } from '@/utils/supabase';
+import { Button } from 'react-native';
 import { View, Text } from '@/components/Themed';
 import { useAuth } from '../../utils/authenticationManager';
 
