@@ -9,7 +9,8 @@ import Colors from '@/constants/Colors';
 const Profile = () => {
   const { isAuthenticated, user, logout } = useAuth()
   const [isDynamicRoundingEnabled, setIsDynamicRoundingEnabled] = React.useState(false)
-
+  const theme = useColorScheme() ?? 'light';
+  const styles = getStyles(theme);
   if (!isAuthenticated || !user) {
     return (
       <View style={styles.container}>
@@ -61,13 +62,13 @@ const Profile = () => {
   )
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: 'light' | 'dark') => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors[useColorScheme() ?? 'light'].profileBackground,
+    backgroundColor: Colors[theme].profileBackground,
   },
   hero: {
-    backgroundColor: Colors[useColorScheme() ?? 'light'].profileHeroBg,
+    backgroundColor: Colors[theme].profileHeroBg,
     padding: 20,
     alignItems: "center",
     borderBottomLeftRadius: 20,
@@ -76,12 +77,12 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors[useColorScheme() ?? 'light'].profileHeroText,
+    color: Colors[theme].profileHeroText,
     marginBottom: 10,
   },
   impactText: {
     fontSize: 16,
-    color: Colors[useColorScheme()?? 'light'].profileHeroText,
+    color: Colors[theme].profileHeroText,
   },
   settingsContainer: {
     padding: 20,
@@ -91,12 +92,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: Colors[useColorScheme() ?? 'light'].profileBorder,
+    borderBottomColor: Colors[theme].profileBorder,
   },
   settingText: {
     marginLeft: 15,
     fontSize: 16,
-    color: Colors[useColorScheme() ?? 'light'].profileText,
+    color: Colors[theme].profileText,
     flex: 1,
   },
 })
